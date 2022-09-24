@@ -14,6 +14,7 @@ void endsc();
 void mist();
 void village();
 void invme();
+void saveing();
 
 //universal inputs
 char left[100] = "left";
@@ -26,6 +27,7 @@ char stone[100] = "stone";
 char ogre[100] = "ogre";
 char help[100] = "help";
 char inventory[100] = "inventory";
+char save[100] = "save";
 
 //inventory array
 int inv[6];
@@ -36,6 +38,12 @@ int plainf = 0;
 //ogre and lady is alive
 int ogreal = 0;
 int ladyal = 0;
+
+//save point ints
+int svplainf = 0;
+int svogreal = 0;
+int svladyal = 0;
+int svinv[6];
 
 //main
 int main() {
@@ -61,16 +69,32 @@ void menu()
 	printf("\n");
 	printf("Type 'start' to START the game\n");
 	printf("Type 'end' to END the game\n");
-
-	int plainf = 0;
-	int ogreal = 0;
-	int ladyal = 0;
+	
+	//reset
+	plainf = 0;
+	ogreal = 0;
+	ladyal = 0;
 	inv[0] = 0;
 	inv[1] = 0;
 	inv[2] = 0;
 	inv[3] = 0;
 	inv[4] = 0;
 	inv[5] = 0;
+
+	//use saves
+	plainf = svplainf;
+	ogreal = svogreal;
+	ladyal = svladyal;
+	inv[0] = svinv[0];
+	inv[1] = svinv[1];
+	inv[2] = svinv[2];
+	inv[3] = svinv[3];
+	inv[4] = svinv[4];
+	inv[5] = svinv[5];
+
+	if (plainf != 0) {
+		printf("You have a save point in the game.\n");
+	}
 
 	//input of main menu
 	while (1) {
@@ -84,7 +108,7 @@ void menu()
 		//start the game
 		if (starting == 0) {
 			printf("\n");
-			printf("the story begins...\n \n");
+			printf("The story begins...\n \n");
 			Sleep(1000);
 			system("cls");
 			plains();
@@ -163,6 +187,26 @@ void invme() {
 	}
 }
 
+/* SAVE GAME
+* Able to save the games inventory and evolving features
+*/
+void saveing() {
+
+	svinv[0] = inv[0];
+	svinv[1] = inv[1];
+	svinv[2] = inv[2];
+	svinv[3] = inv[3];
+	svinv[4] = inv[4];
+	svinv[5] = inv[5];
+
+	svplainf = plainf;
+	svogreal = ogreal;
+	svladyal = ladyal;
+
+	printf("...Progress saved...\n");
+
+}
+
 /* PLAINS
 * where the program starts when they say start in main menu 
 * nothing is special in this section ATM 
@@ -177,6 +221,7 @@ void plains() {
 	int leftp;
 	int rightp;
 	int endp;
+	int savep;
 
 	//if its their fisrt time here 
 	if (plainf == 0) {
@@ -204,6 +249,7 @@ void plains() {
 		endp = strcmp(inputp, end);
 		helpp = strcmp(inputp, help);
 		invp = strcmp(inputp, inventory);
+		savep = strcmp(inputp, save);
 
 		//left
 		if (leftp == 0) {
@@ -230,10 +276,16 @@ void plains() {
 			Sleep(1000);
 			exit(EXIT_FAILURE);
 		}
+
+		//inventory check
 		else if (invp == 0) {
 			invme();
 		}
 
+		//save 
+		else if (savep == 0) {
+			saveing();
+		}
 		//unrecongnised input
 		else {
 			printf("I do not recognise ");
@@ -262,6 +314,7 @@ void path() {
 	int enda;
 	int lefta;
 	int righta;
+	int savea;
 
 	//text
 	printf("You walk down a path. \n");
@@ -291,6 +344,7 @@ void path() {
 		helpa = strcmp(inputa, help);
 		treea = strcmp(inputa, tree);
 		inva = strcmp(inputa, inventory);
+		savea = strcmp(inputa, save);
 
 		//left
 		if (lefta == 0) {
@@ -350,6 +404,11 @@ void path() {
 			invme();
 		}
 
+		//save game
+		else if (savea == 0) {
+			saveing();
+		}
+
 		//unrecognised input
 		else {
 			printf("I do not recognise ");
@@ -379,6 +438,7 @@ void cave() {
 	int axec;
 	int rightc;
 	int leftc;
+	int savec;
 
 	//text
 	printf("You walk into the cave.\n");
@@ -424,6 +484,7 @@ void cave() {
 		stonec = strcmp(inputc, stone);
 		bowc = strcmp(inputc, bow);
 		invc = strcmp(inputc, inventory);
+		savec = strcmp(inputc, save);
 
 		//end 
 		if (endc == 0) {
@@ -474,7 +535,7 @@ void cave() {
 		}
 
 		//right, ogre is dead, they have torch
-		else if (rightc == 0 && ogreal != 0 && inv[2] != 0) {
+		else if (rightc == 0 && ogreal != 0 && inv[1] != 0) {
 			printf("You go right.\n \n");
 			Sleep(1000);
 			mist();
@@ -514,6 +575,11 @@ void cave() {
 			invme();
 		}
 
+		//save game
+		else if (savec == 0) {
+			saveing();
+		}
+
 		//unrecognised input
 		else {
 			printf("I do not recognise ");
@@ -543,6 +609,7 @@ void river() {
 	int torchr;
 	int endr;
 	int rightr;
+	int saver;
 
 	//text
 	printf("You come accross a river, it is too wide and too deep to cross. \n");
@@ -576,6 +643,7 @@ void river() {
 		boatr = strcmp(inputr, boat);
 		riverr = strcmp(inputr, river);
 		invr = strcmp(inputr, inventory);
+		saver = strcmp(inputr, save);
 
 		//end
 		if (endr == 0) {
@@ -647,6 +715,11 @@ void river() {
 			invme();
 		}
 
+		//save game
+		else if (saver == 0) {
+			saveing();
+		}
+
 		//unrecognised input 
 		else {
 			printf("I do not recognise ");
@@ -674,6 +747,7 @@ void mist() {
 	int rightm;
 	int yesm;
 	int nom;
+	int savem;
 	
 	printf("You go deeper inside the cave. \n");
 	Sleep(1000);
@@ -689,7 +763,7 @@ void mist() {
 		printf("'Would you like to return to the after life?' \n");
 	}
 	else {
-		printf("What would you like to do");
+		printf("What would you like to do? \n");
 	}
 
 	while (1) {
@@ -704,6 +778,7 @@ void mist() {
 		helpm = strcmp(inputm, help);
 		ogrem = strcmp(inputm, ogre);
 		invm = strcmp(inputm, inventory);
+		savem = strcmp(inputm, save);
 
 		//end
 		if (endm == 0) {
@@ -771,6 +846,11 @@ void mist() {
 			invme();
 		}
 
+		//save game
+		else if (savem == 0) {
+			saveing();
+		}
+
 		//input unrecognised
 		else {
 			printf("I do not recognise ");
@@ -799,6 +879,7 @@ void village() {
 	int leftv;
 	int rightv;
 	int endv;
+	int savev;
 	inv[4] = 0;
 	
 	printf("The village is surrounded by mountains by all sides, only open towards the river.\n");
@@ -807,7 +888,7 @@ void village() {
 	Sleep(1000);
 	printf("You turn to see a creature unlike anything you have ever seen before. \n");
 	Sleep(1000);
-	printf("It begins to sprint at you. \n");
+	printf("It growls and begins to sprint at you. \n");
 	Sleep(1000);
 	printf("What will you do? \n");
 	printf("Be wise in your choice, you only have time for one move.\n");
@@ -826,6 +907,7 @@ void village() {
 		bowv = strcmp(inputv, bow);
 		torchv = strcmp(inputv, torch);
 		invv = strcmp(inputv, inventory);
+		savev = strcmp(inputv, save);
 
 		//end
 		if (endv == 0) {
@@ -943,6 +1025,11 @@ void village() {
 			invme();
 		}
 
+		//save game
+		else if (savev == 0) {
+		saveing();
+		}
+
 		//input not recognised
 		else {
 			printf("I do not recognise ");
@@ -962,6 +1049,15 @@ void endsc() {
 	printf("You have completed the Hallowed Realm! \n");
 	Sleep(2000);
 	system("pause");
+	svplainf = 0;
+	svogreal = 0;
+	svladyal = 0;
+	svinv[0] = 0;
+	svinv[1] = 0;
+	svinv[2] = 0;
+	svinv[3] = 0;
+	svinv[4] = 0;
+	svinv[5] = 0;
 	system("cls");
 	menu();
 }
